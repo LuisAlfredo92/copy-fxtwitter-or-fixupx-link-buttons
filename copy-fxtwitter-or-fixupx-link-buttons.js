@@ -16,29 +16,40 @@
 
 (function () {
     'use strict';
-    var re = new RegExp(".*(x.com|twitter.com)\/.+\/status\/.+");
-    var exists = false;
+    const ProxyType = {
+        fxtwiter: "fxtwitter",
+        fixupx: "fixupx"
+    };
+    const re = new RegExp(".*(x.com|twitter.com)\/.+\/status\/.+");
+    let exists = false;
 
     // Function to change url
-    function modifyAndSaveUrl(type) {
+    const modifyAndSaveUrl = async (type) => {
         // Get URL
         const currentUrl = window.location.href;
         const isTwitter = currentUrl.includes("twitter.com");
-        var modifiedUrl = "";
-        if (type === "t") {
-            modifiedUrl = currentUrl.replace(isTwitter ? "twitter.com" : "x.com", "fxtwitter.com");
-        } else {
-            modifiedUrl = currentUrl.replace(isTwitter ? "twitter.com" : "x.com", "fixupx.com");
+        let modifiedUrl;
+        switch (type) {
+            case ProxyType.fxtwiter:
+                modifiedUrl = currentUrl.replace(isTwitter ? "twitter.com" : "x.com", "fxtwitter.com");
+                break;
+        
+            default:
+                modifiedUrl = currentUrl.replace(isTwitter ? "twitter.com" : "x.com", "fixupx.com");
+                break;
         }
 
         // Copy to url
-        navigator.clipboard.writeText(modifiedUrl)
-            .then(() => console.log("Modified URL copied to clipboard: ", modifiedUrl))
-            .catch((ex) => console.error("Failed to copy the modified URL: ", ex));
+        try {
+            await navigator.clipboard.writeText(modifiedUrl);
+            console.log("Modified URL copied to clipboard: ", modifiedUrl);
+        } catch (ex) {
+            console.error("Failed to copy the modified URL: ", ex);
+        }
     }
 
     // Function to create buttons
-    function createButton(label, type) {
+    const createButton = (label, type) => {
         const button = document.createElement("BUTTON");
         button.appendChild(document.createTextNode(label));
         button.addEventListener("click", () => modifyAndSaveUrl(type) );
@@ -92,8 +103,8 @@
     };
 
     // Create buttons
-    const fxtwitterButton = createButton("Copy fxtwitter link", "t");
-    const fixupxButton = createButton("Copy fixupx link", "x");
+    const fxtwitterButton = createButton("Copy fxtwitter link", ProxyType.fxtwiter);
+    const fixupxButton = createButton("Copy fixupx link", ProxyType.fixupx);
 
     // Displays the buttons when the page is correctly loaded
     // Options for the observer (which mutations to observe)
