@@ -24,7 +24,7 @@
     let exists = false;
 
     // Function to change url
-    const modifyAndSaveUrl = async (type) => {
+    const modifyAndSaveUrl = async (type, button) => {
         // Get URL
         const currentUrl = window.location.href;
         const isTwitter = currentUrl.includes("twitter.com");
@@ -43,6 +43,10 @@
         try {
             await navigator.clipboard.writeText(modifiedUrl);
             console.log("Modified URL copied to clipboard: ", modifiedUrl);
+            // Change the button text to "Copied!", then, wait 3 seconds and change it back to the original text
+            const originalText = button.innerText;
+            button.innerText = "Copied!";
+            setTimeout(() => button.innerText = originalText, 3000);
         } catch (ex) {
             console.error("Failed to copy the modified URL: ", ex);
         }
@@ -52,7 +56,7 @@
     const createButton = (label, type) => {
         const button = document.createElement("BUTTON");
         button.appendChild(document.createTextNode(label));
-        button.addEventListener("click", () => modifyAndSaveUrl(type) );
+        button.addEventListener("click", () => modifyAndSaveUrl(type, button) );
         button.style.flexGrow = "1";
         button.style.textAlign = "center";
         button.style.fontFamily = "TwitterChirp";
