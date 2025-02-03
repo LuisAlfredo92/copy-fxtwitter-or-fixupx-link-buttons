@@ -2,7 +2,7 @@
 // @name         Copy fxtwitter or fixupx link buttons
 // @name:es      Botones de copiar enlace de fxtwitter o fixupx
 // @namespace    http://tampermonkey.net/
-// @version      1.0.1
+// @version      1.1.0
 // @description  Adds two buttons at the top of the status page on Twitter to easily copy an fxtwitter or fixupx url
 // @description:es  Añade dos botones en la parte superior de las páginas de tweets para copiar enlaces fxtwitter o fixupx fácilmente
 // @author       LuisAlfredo92
